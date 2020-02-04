@@ -1,0 +1,12 @@
+{block content}
+    {include '../banner.latte'}
+    <div id="content">
+        {if !empty($flashes)}
+            <div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+            <hr>
+            {include '../link.latte'}
+        {else}
+            {control passwordForm}
+        {/if}
+    </div>
+{/block}
