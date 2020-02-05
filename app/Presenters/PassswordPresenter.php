@@ -12,6 +12,19 @@ use Nette\Application\UI\Form;
  */
 final class PasswordPresenter extends Nette\Application\UI\Presenter
 {
+    private \App\Components\FormFactory $formFactory;
+
+    public function __construct(\App\Components\FormFactory $formFactory)
+    {
+        parent::__construct();
+        $this->formFactory = $formFactory;
+    }
+
+
+    protected function createComponentPasswordForm(): ?\Nette\ComponentModel\IComponent
+    {
+        return $this->formFactory->create();
+    }
 
     public function renderDefault() : void
     {
@@ -22,32 +35,4 @@ final class PasswordPresenter extends Nette\Application\UI\Presenter
         }
     }
 
-    /**
-     * Password form component
-     *
-     * @return Form
-     */
-    public function createComponentPasswordForm() : Form
-    {
-        $form = new Form;
-
-	$form->addEmail('email', 'Email:')->setRequired();
-	$form->addSubmit('send', 'Send new password');
-        $form->onSuccess[] = [$this, 'passwordFormSucceeded'];
-
-	return $form;
-    }
-    /**
-     *
-     *
-     * @param Form $form
-     * @param \stdClass $values
-     * @return void
-     */
-    public function passwordFormSucceeded(Form $form, \stdClass $values): void
-    {
-        $this->flashMessage("Odesláno na e-mail {$values->email}!", 'success');
-
-        $this->redirect('this');
-    }
 }
